@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculator Web App</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .calculator { background:#222; padding:20px; border-radius:12px; box-shadow:0 0 10px #000; }
+    input { width:220px; height:40px; font-size:20px; text-align:right; margin-bottom:10px; border:none; border-radius:8px; padding-right:10px; }
+    button { width:50px; height:50px; margin:5px; font-size:18px; border:none; border-radius:8px; cursor:pointer; background:#333; color:#fff; }
+    button:hover { background:#555; }
+    .row { text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="row">
+      <button onclick="clearDisplay()">C</button>
+      <button onclick="deleteChar()">⌫</button>
+      <button onclick="appendOperator('/')">÷</button>
+      <button onclick="appendOperator('*')">×</button>
+    </div>
+    <div class="row">
+      <button onclick="appendNumber('7')">7</button>
+      <button onclick="appendNumber('8')">8</button>
+      <button onclick="appendNumber('9')">9</button>
+      <button onclick="appendOperator('-')">−</button>
+    </div>
+    <div class="row">
+      <button onclick="appendNumber('4')">4</button>
+      <button onclick="appendNumber('5')">5</button>
+      <button onclick="appendNumber('6')">6</button>
+      <button onclick="appendOperator('+')">+</button>
+    </div>
+    <div class="row">
+      <button onclick="appendNumber('1')">1</button>
+      <button onclick="appendNumber('2')">2</button>
+      <button onclick="appendNumber('3')">3</button>
+      <button rowspan="2" onclick="calculate()">=</button>
+    </div>
+    <div class="row">
+      <button onclick="appendNumber('0')">0</button>
+      <button onclick="appendNumber('.')">.</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function appendNumber(num) { display.value += num; }
+    function appendOperator(op) { display.value += ' ' + op + ' '; }
+    function clearDisplay() { display.value = ''; }
+    function deleteChar() { display.value = display.value.slice(0, -1); }
+    function calculate() {
+      try {
+        const result = eval(display.value);
+        display.value = result === Infinity ? 'Error' : result;
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    document.addEventListener('keydown', e => {
+      if(/[0-9+\-*/.]/.test(e.key)) display.value += e.key;
+      else if(e.key === 'Enter') calculate();
+      else if(e.key === 'Backspace') deleteChar();
+      else if(e.key.toLowerCase() === 'c') clearDisplay();
+    });
+  </script>
+</body>
+</html>
